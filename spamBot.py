@@ -35,3 +35,21 @@ def send_email(inputElement):
         inputElement.send_keys("myspambot01@gmail.com")
     except:
         pass
+
+'''
+This function will insert the value "123-456-7890" in the field within the form
+'''
+def send_contact(inputElement):
+    try:
+        inputElement.send_keys("123-456-7890")
+    except:
+        pass    
+
+'''
+This function will submit all the values within the form
+'''
+def submit(inputElement):
+    try:
+        inputElement.click()
+    except:
+        pass
