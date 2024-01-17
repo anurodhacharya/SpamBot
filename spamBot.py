@@ -100,3 +100,37 @@ def processing(name, id, type, regex, inputElement, isMailSubmit=False, isNameSu
         send_contact(inputElement)
     if isSubmit == True:
         submit(inputElement)
+
+def findElements(url):
+    driver.get(url)
+    allForms = retrieve_forms(url)
+    for i, singleForm in enumerate(allForms, 1):
+        
+        # Finding the input tag within the form
+        for input in singleForm.find_all("input"):
+            pathInput = str(find_xpath(input))        
+            
+            # We find the input element within the form using it's XPath
+            elementInput = driver.find_element(By.XPATH, pathInput)
+            
+            # We find the name,id and type field and extract each of those values in lowercase
+            nameField = elementInput.get_attribute('name')     
+            # forField = elementInput.get_attribute('for')     
+            idField = elementInput.get_attribute('id') 
+            # classField = elementInput.get_attribute('class')    
+            typeField = elementInput.get_attribute('type')         
+                
+            # Different keywords that could indicate email field
+            patternEmail = "email EMAIL mail e-mail MAIL E-mail"        
+
+            # We send the fields for checking if those name,id and type field have required values that we are looking for
+            processing(nameField, idField, typeField, patternEmail, elementInput, isMailSubmit=True)
+    
+            patternName = "name fname lname firstname lastname Fname Lname"   
+            processing(nameField, idField, typeField, patternName, elementInput, isNameSubmit=True)                               
+
+            patternPhone = "phone mobile pno number contact mob"       
+            processing(nameField, idField, typeField, patternPhone, elementInput, isPhoneSubmit=True)                                       
+
+            patternSubmit = "submit SUBMIT Submit register Register subscribe SUBSCRIBE"  
+            processing(nameField, idField, typeField, patternSubmit, elementInput, isSubmit=True)  
